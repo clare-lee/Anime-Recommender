@@ -14,8 +14,8 @@ def anime_view():
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist)
 
-@views.route('/recommendation')
-def anime_view():
-    print(Anime.__table__)
-    recommendation = Anime.query.all()
-    return render_template("recommendation.html", recommendation = recommendation)
+# @views.route('/recommendation')
+# def anime_view():
+#     print(Anime.__table__)
+#     recommendation = Anime.query.all()
+#     return render_template("recommendation.html", recommendation = recommendation)
