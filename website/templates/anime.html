@@ -1,9 +1,11 @@
 {% extends "base.html" %} {% block title %}Home{% endblock title %}
 
 {% block content %}
-<h1>This is the anime</h1>
+<br />
+<h1>All the anime</h1>
 <pre>
     {% for anime in animelist %}
-    {{ anime.name }}{% endfor %}
+    {{ anime.name }}
+    {% endfor %}
 </pre>
 {% endblock %}

@@ -1,5 +1,11 @@
 {% extends "base.html" %} {% block title %}Home{% endblock title %}
 
 {% block content %}
-<h1>This is the home</h1>
+<br />
+<h1> Here's a what's popular this year!</h1>
+<pre>
+    {% for tv in tvs %}
+    {{ tv.name }}
+    {% endfor %}
+</pre>
 {% endblock %}
