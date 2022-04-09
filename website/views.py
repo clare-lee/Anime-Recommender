@@ -64,7 +64,14 @@ def home():     # this function will run whenever we go to route
     anime_tv = anime_tv.sort_values(by='rating', ascending=False)
     anime_tv.reset_index(drop=True, inplace=True)
     tvs = anime_tv.head(10)
-    return render_template("home.html", tvs = tvs)
+
+    # The highest rated Movies
+    anime_movie = anime.loc[anime['medium'] == 'Movie']
+    anime_movie = anime_tv.sort_values(by='rating', ascending=False)
+    anime_movie.reset_index(drop=True, inplace=True)
+    mvs = anime_movie.head(10)
+
+    return render_template("home.html", tvs = tvs, mvs = mvs)
     
 @views.route('/anime')
 def anime_view():
@@ -77,7 +84,7 @@ def recommendation():
 
     return render_template("recommendation.html")
 
-@views.route('/search', methods=['POST'])
+@views.route('/title_search', methods=['POST'])
 def search():
     engine = create_engine('mysql+pymysql://root@localhost:3306/Recommender')
     query = engine.execute('SELECT * FROM anime')

@@ -1,14 +1,22 @@
 {% extends "base.html" %} {% block title %}Home{% endblock title %}
 
 {% block content %}
-<br />
-<h1>All time best rated</h1>
+<br/>
+
+<h3>All time best rated</h3>
 <pre>
-    {% for tv in tvs%}
-    {{tvs['name'].values}}
+    {% for tv_name in tvs['name'].values %}
+    {{tv_name}}
     {% endfor %}
-    {{ tvs['name'].values }}
-    {{ tvs['rating'].values}}
+</pre>
+
+<br/>
+
+<h3>Best Movies</h3>
+<pre>
+    {% for movie_name in mvs['name'].values %}
+    {{movie_name}}
+    {% endfor %}
 </pre>
 
 {% endblock %}
