@@ -2,10 +2,13 @@
 
 {% block content %}
 <br />
-<h1> Here's a what's popular this year!</h1>
+<h1>All time best rated</h1>
 <pre>
-    {% for tv in tvs %}
-    {{ tv.name }}
+    {% for tv in tvs%}
+    {{tvs['name'].values}}
     {% endfor %}
+    {{ tvs['name'].values }}
+    {{ tvs['rating'].values}}
 </pre>
+
 {% endblock %}

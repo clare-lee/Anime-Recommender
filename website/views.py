@@ -1,10 +1,55 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from .models import Anime
 from flask_login import login_required, current_user
 import pandas as pd
 from sqlalchemy import create_engine
 views = Blueprint('views', __name__)
 
+genre_list = {
+    'genre1':'Action',
+    'genre2':'Adventure',
+    'genre3':'Cars',
+    'genre4':'Comedy',
+    'genre5':'Dementia',
+    'genre6':'Demons',
+    'genre7':'Drama',
+    'genre8':'Ecchi',
+    'genre9':'Fantasy',
+    'genre10':'Game',
+    'genre11':'Harem',
+    'genre12':'Hentai',
+    'genre13':'Historical',
+    'genre14':'Horror',
+    'genre15':'Josei',
+    'genre16':'Kids',
+    'genre17':'Magic',
+    'genre18':'Martial Arts',
+    'genre19':'Mecha',
+    'genre20':'Military',
+    'genre21':'Music',
+    'genre22':'Mystery',
+    'genre23':'Parody',
+    'genre24':'Police',
+    'genre25':'Psychological',
+    'genre26':'Romance',
+    'genre27':'Samurai',
+    'genre28':'School',
+    'genre29':'Sci-Fi',
+    'genre30':'Seinen',
+    'genre31':'Shoujo',
+    'genre32':'Shoujo Ai',
+    'genre33':'Shounen',
+    'genre34':'Shounen Ai',
+    'genre35':'Slice of Life',
+    'genre36':'Space',
+    'genre37':'Sports',
+    'genre38':'Super Power',
+    'genre39':'Supernatural',
+    'genre40':'Thriller',
+    'genre41':'Vampire',
+    'genre42':'Yaoi',
+    'genre43':'Yuri'
+}
 
 @views.route('/')
 def home():     # this function will run whenever we go to route
@@ -14,12 +59,11 @@ def home():     # this function will run whenever we go to route
     rows = query.fetchall()
     anime = pd.DataFrame(rows)
 
-    # The highiest rated TV-series
+    # The highest rated TV-series
     anime_tv = anime.loc[anime['medium'] == 'TV']
     anime_tv = anime_tv.sort_values(by='rating', ascending=False)
     anime_tv.reset_index(drop=True, inplace=True)
     tvs = anime_tv.head(10)
-    print(tvs)
     return render_template("home.html", tvs = tvs)
     
 @views.route('/anime')
@@ -28,9 +72,28 @@ def anime_view():
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist)
 
+@views.route('/recommendation')
+def recommendation():
 
-# @views.route('/recommendation')
-# def anime_view():
-#     print(Anime.__table__)
-#     recommendation = Anime.query.all()
-#     return render_template("recommendation.html", recommendation = recommendation)
+    return render_template("recommendation.html")
+
+@views.route('/search', methods=['POST'])
+def search():
+    engine = create_engine('mysql+pymysql://root@localhost:3306/Recommender')
+    query = engine.execute('SELECT * FROM anime')
+
+    rows = query.fetchall()
+    anime = pd.DataFrame(rows)
+
+    return request.form['anime_title']
+    
+@views.route('/genre_search', methods=['POST'])
+def genre_search():
+    genres = []
+
+    for i in range(1,44):
+        if request.form.get(f'genre{i}') is not None:
+            genres.append(genre_list[f'genre{i}'])
+
+
+    return str(genres)

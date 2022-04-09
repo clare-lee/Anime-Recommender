@@ -1,9 +1,178 @@
-{% extends "base.html" %} {% block title %}Home{% endblock title %}
+{% extends "base.html" %} {% block title %}Recommendations{% endblock title %}
 
 {% block content %}
-<h1>Your Recommendations</h1>
-<pre>
-    {% for anime in animelist %}
-    {{ anime.name }}{% endfor %}
-</pre>
+<br />
+<h3 align="center">Get Anime Recommendations</h3>
+<br />
+<form method="POST" action="/search"> 
+    <div class="form-group">
+        <label for="anime_title">Get recommendations based on title</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="anime_title" 
+            name="anime_title" 
+            placeholder="Enter anime"
+        />
+    </div>
+    <button type="submit" class="btn btn-primary">Enter</button>
+</form>
+<br/>
+<p>or</p>
+<br/>
+<form method="POST" action="/genre_search"> 
+    <div class="form-group">
+        <label for="genres">Pick Genres</label>
+        <br/>
+        <table class='table'>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="genre1" name="genre1" /> Adventure 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre2" name="genre2" /> Action 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre3" name="genre3" /> Cars 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre4" name="genre4" /> Comedy 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre5" name="genre5" /> Dementia 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre6" name="genre6" /> Demons 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre7" name="genre7" /> Drama 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre8" name="genre8" /> Ecchi 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="genre9" name="genre9" /> Fantasy 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre10" name="genre10" /> Game 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre11" name="genre11" /> Harem 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre12" name="genre12" /> Hentai
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre13" name="genre13" /> Historical 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre14" name="genre14" /> Horror 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre15" name="genre15" /> Josei 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre16" name="genre16" /> Kids 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="genre17" name="genre17" /> Magic 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre18" name="genre18" /> Martial Arts 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre19" name="genre19" /> Mecha 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre20" name="genre20" /> Military 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre21" name="genre21" /> Music 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre22" name="genre22" /> Mystery 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre23" name="genre23" /> Parody 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre24" name="genre24" /> Police 
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <input type="checkbox" id="genre25" name="genre25" /> Psychological 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre26" name="genre26" /> Romance 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre27" name="genre27" /> Samurai 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre28" name="genre28" /> School 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre29" name="genre29" /> Sci-fi 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre30" name="genre30" /> Seinen 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre31" name="genre31" /> Shoujo 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre32" name="genre32" /> Shoujo Ai 
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <input type="checkbox" id="genre33" name="genre33" /> Shounen 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre34" name="genre34" />  Shounen Ai
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre35" name="genre35" />  Slice of Life
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre36" name="genre36" /> Space
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre37" name="genre37" /> Sports
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre38" name="genre38" /> SuperPower
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre39" name="genre39" /> Supernatural
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre40" name="genre40" /> Thriller 
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <input type="checkbox" id="genre41" name="genre41" /> Vampire
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre42" name="genre42" /> Yaoi
+                    </td>
+                    <td>
+                        <input type="checkbox" id="genre43" name="genre43" /> Yuri
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Enter</button>
+    </div>
+</form>
 {% endblock %}
