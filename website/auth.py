@@ -42,7 +42,7 @@ def sign_up():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            flash('Emal already exists.', category='error')
+            flash('Email already exists.', category='error')
         elif len(email) < 6:
             flash("Invalid email.", category='error')
         elif len(first_name) < 2:

@@ -64,15 +64,24 @@ def home():     # this function will run whenever we go to route
     anime_tv = anime_tv.sort_values(by='rating', ascending=False)
     anime_tv.reset_index(drop=True, inplace=True)
     tvs = anime_tv.head(10)
+    tvs = tvs['name']
 
     # The highest rated Movies
     anime_movie = anime.loc[anime['medium'] == 'Movie']
     anime_movie = anime_tv.sort_values(by='rating', ascending=False)
     anime_movie.reset_index(drop=True, inplace=True)
     mvs = anime_movie.head(10)
+    mvs = mvs['name']
 
-    return render_template("home.html", tvs = tvs, mvs = mvs)
-    
+    # The highest rated OVA
+    anime_ova = anime.loc[anime['medium'] == 'OVA']
+    anime_ova = anime_tv.sort_values(by='rating', ascending=False)
+    anime_ova.reset_index(drop=True, inplace=True)
+    ovs = anime_ova.head(10)
+    ovs = ovs['name']
+
+    return render_template("home.html",best_list=zip(tvs,mvs,ovs))
+
 @views.route('/anime')
 def anime_view():
     print(Anime.__table__)
@@ -91,6 +100,8 @@ def search():
 
     rows = query.fetchall()
     anime = pd.DataFrame(rows)
+
+
 
     return request.form['anime_title']
     

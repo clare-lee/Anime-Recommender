@@ -2,21 +2,23 @@
 
 {% block content %}
 <br/>
-
-<h3>All time best rated</h3>
-<pre>
-    {% for tv_name in tvs['name'].values %}
-    {{tv_name}}
-    {% endfor %}
-</pre>
-
+<h1 style="text-align:center">Welcome!</h1>
+<h5 style="text-align:center">Here are some general recommendations to start</h5>
 <br/>
-
-<h3>Best Movies</h3>
-<pre>
-    {% for movie_name in mvs['name'].values %}
-    {{movie_name}}
+    
+    <table  width="100%;">
+        <tr>
+            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Animes</th>
+            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Movies</th>
+            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best OVAs</th>
+        </tr>
+        {% for tvs, mvs, ovs in best_list  %}
+        <tr>
+            <td style="padding-bottom: 10px;" >{{ "- " + tvs}}</td>
+            <td>{{ "- " +mvs}}</td>
+            <td>{{ "- " +ovs}}</td>
+        </tr>
     {% endfor %}
-</pre>
+    </table>    
 
 {% endblock %}
