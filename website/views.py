@@ -80,7 +80,7 @@ def home():     # this function will run whenever we go to route
     ovs = anime_ova.head(10)
     ovs = ovs['name']
 
-    return render_template("home.html",best_list=zip(tvs,mvs,ovs))
+    return render_template("home.html", best_list=zip(tvs,mvs,ovs))
 
 @views.route('/anime')
 def anime_view():
@@ -93,6 +93,7 @@ def recommendation():
 
     return render_template("recommendation.html")
 
+# recommendation
 @views.route('/title_search', methods=['POST'])
 def search():
     engine = create_engine('mysql+pymysql://root@localhost:3306/Recommender')
@@ -105,6 +106,7 @@ def search():
 
     return request.form['anime_title']
     
+# recommendation
 @views.route('/genre_search', methods=['POST'])
 def genre_search():
     genres = []
