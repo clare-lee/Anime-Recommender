@@ -9,58 +9,113 @@ from sqlalchemy import create_engine
 
 import numpy as np
 
-picked_genres = np.zeros(43)
+
+
+df = pd.read_csv('anime.csv')
+
 
 anime_genres = ['Action',
- 'Adventure',
- 'Comedy',
- 'Drama',
- 'Sci-Fi',
- 'Space',
- 'Mystery',
- 'Magic',
- 'Police',
- 'Supernatural',
- 'Fantasy',
- 'Shounen',
- 'Sports',
- 'Josei',
- 'Romance',
- 'Slice of Life',
- 'Cars',
- 'Seinen',
- 'Horror',
- 'Psychological',
- 'Thriller',
- 'Martial Arts',
- 'Super Power',
- 'School',
- 'Ecchi',
- 'Vampire',
- 'Historical',
- 'Military',
- 'Dementia',
- 'Mecha',
- 'Demons',
- 'Samurai',
- 'Game',
- 'Shoujo',
- 'Harem',
- 'Music',
- 'Shoujo Ai',
- 'Shounen Ai',
- 'Kids',
- 'Hentai',
- 'Parody',
- 'Yuri',
- 'Yaoi']
+                'Adventure',
+                'Cars',
+                'Comedy',
+                'Dementia',
+                'Demons',
+                'Drama',
+                'Ecchi',
+                'Fantasy',
+                'Game',
+                'Harem',
+                'Hentai',
+                'Historical',
+                'Horror',
+                'Josei',
+                'Kids',
+                'Magic',
+                'Martial Arts',
+                'Mecha',
+                'Military',
+                'Music',
+                'Mystery',
+                'Parody',
+                'Police',
+                'Psychological',
+                'Romance',
+                'Samurai',
+                'School',
+                'Sci-Fi',
+                'Seinen',
+                'Shoujo',
+                'Shoujo Ai',
+                'Shounen',
+                'Shounen Ai',
+                'Slice of Life',
+                'Space',
+                'Sports',
+                'Super Power',
+                'Supernatural',
+                'Thriller',
+                'Vampire',
+                'Yaoi',
+                'Yuri']
+user_list = ['Adventure','Cars']
 
-user_list = ['Hentai', 'Yaoi']
+genre_list = pd.DataFrame(columns=['anime_id','Action',
+                'Adventure',
+                'Cars',
+                'Comedy',
+                'Dementia',
+                'Demons',
+                'Drama',
+                'Ecchi',
+                'Fantasy',
+                'Game',
+                'Harem',
+                'Hentai',
+                'Historical',
+                'Horror',
+                'Josei',
+                'Kids',
+                'Magic',
+                'Martial Arts',
+                'Mecha',
+                'Military',
+                'Music',
+                'Mystery',
+                'Parody',
+                'Police',
+                'Psychological',
+                'Romance',
+                'Samurai',
+                'School',
+                'Sci-Fi',
+                'Seinen',
+                'Shoujo',
+                'Shoujo Ai',
+                'Shounen',
+                'Shounen Ai',
+                'Slice of Life',
+                'Space',
+                'Sports',
+                'Super Power',
+                'Supernatural',
+                'Thriller',
+                'Vampire',
+                'Yaoi',
+                'Yuri'])
 
-print(len(anime_genres))
-for g in user_list:
-    for i in range(len(anime_genres)):
-        if g == anime_genres[i]:
-            picked_genres[i] = 1
-            
-print(picked_genres)
+for x in df[['anime_id','genre']].iterrows():
+    try:
+        #print(x[1]['anime_id'])
+        picked_genres = np.zeros(43).astype(int).tolist()
+        for i in range(len(anime_genres)):
+            if anime_genres[i] in x[1]['genre']:
+                picked_genres[i] = 1
+        
+        #print(x[1]['anime_id'],picked_genres)
+        picked_genres.insert(0,x[1]['anime_id'])
+        genre_list.loc[genre_list.shape[0]]=picked_genres
+    except TypeError:
+        pass
+
+print(genre_list)
+genre_list.to_csv('genre.csv')

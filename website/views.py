@@ -68,14 +68,14 @@ def home():     # this function will run whenever we go to route
 
     # The highest rated Movies
     anime_movie = anime.loc[anime['medium'] == 'Movie']
-    anime_movie = anime_tv.sort_values(by='rating', ascending=False)
+    anime_movie = anime_movie.sort_values(by='rating', ascending=False)
     anime_movie.reset_index(drop=True, inplace=True)
     mvs = anime_movie.head(10)
     mvs = mvs['name']
 
     # The highest rated OVA
     anime_ova = anime.loc[anime['medium'] == 'OVA']
-    anime_ova = anime_tv.sort_values(by='rating', ascending=False)
+    anime_ova = anime_ova.sort_values(by='rating', ascending=False)
     anime_ova.reset_index(drop=True, inplace=True)
     ovs = anime_ova.head(10)
     ovs = ovs['name']
