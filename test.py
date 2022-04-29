@@ -12,7 +12,7 @@ import numpy as np
 
 
 df = pd.read_csv('anime.csv')
-
+df2 = pd.read_csv('anime_original.csv').set_index("anime_id")
 
 anime_genres = ['Action',
                 'Adventure',
@@ -103,6 +103,9 @@ genre_list = pd.DataFrame(columns=['anime_id','Action',
                 'Yaoi',
                 'Yuri'])
 
+df['binary_genres'] = "sas"
+df['popularity'] = 0
+df = df.set_index("anime_id")
 for x in df[['anime_id','genre']].iterrows():
     try:
         #print(x[1]['anime_id'])
@@ -110,12 +113,12 @@ for x in df[['anime_id','genre']].iterrows():
         for i in range(len(anime_genres)):
             if anime_genres[i] in x[1]['genre']:
                 picked_genres[i] = 1
+       
+        df.at[x[0], 'binary_genres'] = ", ".join([str(i) for i in picked_genres])
         
-        #print(x[1]['anime_id'],picked_genres)
-        picked_genres.insert(0,x[1]['anime_id'])
-        genre_list.loc[genre_list.shape[0]]=picked_genres
     except TypeError:
-        pass
+        print("type error")
 
-print(genre_list)
-genre_list.to_csv('genre.csv')
+
+df['popularity'] = df2['members'] 
+df.to_csv('anime2.csv')
