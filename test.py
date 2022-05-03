@@ -121,4 +121,4 @@ for x in df[['anime_id','genre']].iterrows():
 
 
 df['popularity'] = df2['members'] 
-df.to_csv('anime2.csv')
+df.to_csv('anime2.csv')/Users/chick/Recommender-System/anime.csv

@@ -3,6 +3,9 @@ from .models import Anime
 from flask_login import login_required, current_user
 import pandas as pd
 from sqlalchemy import create_engine
+from recommender import get_nearest_neighbors
+
+
 views = Blueprint('views', __name__)
 
 genre_list = {
@@ -102,8 +105,6 @@ def search():
     rows = query.fetchall()
     anime = pd.DataFrame(rows)
 
-
-
     return request.form['anime_title']
     
 # recommendation
@@ -113,7 +114,12 @@ def genre_search():
 
     for i in range(1,44):
         if request.form.get(f'genre{i}') is not None:
-            genres.append(genre_list[f'genre{i}'])
+            genres.append(1)
+        else:
+            genres.append(0)
 
+    neighbors = get_nearest_neighbors(genre,10)
 
-    return str(genres)
+    #create log here 
+    
+    return str(neighbors)
