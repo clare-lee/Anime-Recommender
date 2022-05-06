@@ -3,7 +3,7 @@ from .models import Anime
 from flask_login import login_required, current_user
 import pandas as pd
 from sqlalchemy import create_engine
-from recommender import get_nearest_neighbors
+from .recommender import get_nearest_neighbors
 
 
 views = Blueprint('views', __name__)
@@ -118,8 +118,8 @@ def genre_search():
         else:
             genres.append(0)
 
-    neighbors = get_nearest_neighbors(genre,10)
+    neighbors = get_nearest_neighbors(genres,10)
 
     #create log here 
-    
+
     return str(neighbors)

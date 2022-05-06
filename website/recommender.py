@@ -2,7 +2,7 @@ import json
 import pandas as pd
 import operator
 from scipy import spatial
-from models import Anime
+from .models import Anime
 
 def anime_formatter():
     animelist = Anime.query.all()
