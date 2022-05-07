@@ -55,12 +55,24 @@ genre_list = {
 
 @views.route('/')
 def home():     # this function will run whenever we go to route
+    
+    rows = Anime.query.all()
 
-    rows = Anime.fetchall()
-    anime = pd.DataFrame(rows)
+    print(type(rows))
+    # rows = <class 'list'>
+    # rows[0] = <class 'website.models.Anime'>
 
-    # The highest rated TV-series
+    anime = pd.DataFrame([vars(r) for r in rows])
+    
+    # attempts
+    #anime = pd.DataFrame(rows.objects.all().values())
+    #anime = pd.DataFrame(rows, columns=['anime_id','Name','genre','medium','episodes','rating','binary_genres','members'])
+
+    # The highest rated and most popular TV-series
     anime_tv = anime.loc[anime['medium'] == 'TV']
+    # Selects most popular 
+    anime_tv = anime_tv.nlargest(30,'members')
+    # Sorts highest rated
     anime_tv = anime_tv.sort_values(by='rating', ascending=False)
     anime_tv.reset_index(drop=True, inplace=True)
     tvs = anime_tv.head(10)
@@ -68,6 +80,9 @@ def home():     # this function will run whenever we go to route
 
     # The highest rated Movies
     anime_movie = anime.loc[anime['medium'] == 'Movie']
+    # Selects most popular 
+    anime_movie = anime_movie.nlargest(30,'members')
+    # Sorts highest rated
     anime_movie = anime_movie.sort_values(by='rating', ascending=False)
     anime_movie.reset_index(drop=True, inplace=True)
     mvs = anime_movie.head(10)
@@ -75,6 +90,9 @@ def home():     # this function will run whenever we go to route
 
     # The highest rated OVA
     anime_ova = anime.loc[anime['medium'] == 'OVA']
+    # Selects most popular 
+    anime_ova = anime_ova.nlargest(30,'members')
+    # Sorts highest rated
     anime_ova = anime_ova.sort_values(by='rating', ascending=False)
     anime_ova.reset_index(drop=True, inplace=True)
     ovs = anime_ova.head(10)
@@ -84,7 +102,7 @@ def home():     # this function will run whenever we go to route
 
 @views.route('/anime')
 def anime_view():
-    print(Anime.__table__)
+    #print(Anime.__table__)
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist)
 

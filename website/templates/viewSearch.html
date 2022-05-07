@@ -2,11 +2,14 @@
 
 {% block content %}
 <br />
-<h1 style="text-align:center">Recommended Anime</h1>
-<h5 style="text-align:center">This is your recommendations</h5>
-<pre>
+<h1 style="text-align:center">Here's Your Recommendation</h1>
+<br />
+
+<pre style="border:4px black solid">
     {% for anime in animelist %}
     {{ anime }}
     {% endfor %}
 </pre>
+
+
 {% endblock %}

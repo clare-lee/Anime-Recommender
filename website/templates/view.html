@@ -4,9 +4,9 @@
 <br />
 <h1 style="text-align:center">Recommendation History</h1>
 <h5 style="text-align:center">This is the list of all your recommendation</h5>
-<pre>
-    {% for anime in logs %}
-    {{ anime.date.strftime("%A %B %d, %Y") }} - {{ anime.data}} 
+<pre style="border:4px black solid">
+    {% for log in logs %}
+    {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
     {% endfor %}
 </pre>
 {% endblock %}
