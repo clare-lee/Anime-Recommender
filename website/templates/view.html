@@ -1,12 +1,20 @@
-{% extends "base.html" %} {% block title %}Anime{% endblock title %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Anime{% endblock title %} {% block
+content %}
 <br />
-<h1 style="text-align:center">Recommendation History</h1>
-<h5 style="text-align:center">This is the list of all your recommendation</h5>
-<pre style="border:4px black solid">
-    {% for log in logs %}
-    {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
-    {% endfor %}
-</pre>
-{% endblock %}
+<h1 style="text-align: center">Your Recommendation History</h1>
+
+<div>
+    {% if logs is defined %}
+
+    <image height="80%" style="position: absolute; left: 0; bottom: 0" src="{{url_for('static',filename = 'hand.png')}}">
+    </image>
+    <p style="position: absolute; left: 50%; bottom: 50%" > <small>wow it's empty</small> </p>
+
+    {% else %}
+    <pre style="border: 4px black solid">
+        {% for log in logs %}
+            {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
+        {% endfor %}
+        </pre>
+    {% endif %} {% endblock %}
+</div>

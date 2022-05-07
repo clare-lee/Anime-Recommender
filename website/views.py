@@ -171,8 +171,8 @@ def genre_search():
 def view_log():
 
     ### TO DO: if user has no recommendations, display a message
-    if Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all() == None:
-        pass
+    # if Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all() == None:
+    #     pass
 
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
