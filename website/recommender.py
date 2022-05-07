@@ -19,10 +19,10 @@ def get_distance(genre_1, genre_2):
 def get_nearest_neighbors(genre_list: list, K: int):
     distances = []
     anime_dictionary = anime_formatter()
-
+    
     for anime in anime_dictionary:
-        dist = get_distance(genre_list, anime_dictionary[anime][1]) 
-        distances.append((anime, dist))
+        dist = get_distance(genre_list, anime[1]) 
+        distances.append((anime[0], dist))
 
     distances.sort(key=operator.itemgetter(1)) # Sort the distances of animes
     neighbors = []

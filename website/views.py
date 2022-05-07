@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request
-from .models import Anime
+from .models import Anime, Log
 from flask_login import login_required, current_user
 import pandas as pd
-from sqlalchemy import create_engine
 from .recommender import get_nearest_neighbors
-
+from . import db
 
 views = Blueprint('views', __name__)
 
@@ -56,10 +55,8 @@ genre_list = {
 
 @views.route('/')
 def home():     # this function will run whenever we go to route
-    engine = create_engine('mysql+pymysql://root@localhost:3306/Recommender')
-    query = engine.execute('SELECT * FROM anime')
 
-    rows = query.fetchall()
+    rows = Anime.fetchall()
     anime = pd.DataFrame(rows)
 
     # The highest rated TV-series
@@ -99,16 +96,25 @@ def recommendation():
 # recommendation
 @views.route('/title_search', methods=['POST'])
 def search():
-    engine = create_engine('mysql+pymysql://root@localhost:3306/Recommender')
-    query = engine.execute('SELECT * FROM anime')
+    
+    anime = Anime.query.filter_by(name = request.form.get("anime_title")).first()
+    binary_genres = [int(i) for i in anime.binary_genres.split(",")]
+    neighbors = get_nearest_neighbors(binary_genres,11)
+    del neighbors[0]
+    
+    #create log 
+    log = Log(
+        data = str(neighbors),
+        user_id = current_user.get_id()
+    )
+    db.session.add(log)
+    db.session.commit()
 
-    rows = query.fetchall()
-    anime = pd.DataFrame(rows)
-
-    return request.form['anime_title']
+    return render_template('/viewSearch.html', animelist=neighbors)
     
 # recommendation
 @views.route('/genre_search', methods=['POST'])
+@login_required
 def genre_search():
     genres = []
 
@@ -120,6 +126,20 @@ def genre_search():
 
     neighbors = get_nearest_neighbors(genres,10)
 
-    #create log here 
+    #create log 
+    log = Log(
+        data = str(neighbors),
+        user_id = current_user.get_id()
+    )
+    db.session.add(log)
+    db.session.commit()
 
-    return str(neighbors)
+    return render_template('/viewSearch.html', animelist=neighbors)
+
+# see log of recommendation
+@views.route('/view', methods=['GET'])
+@login_required
+def view_log():
+    logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
+
+    return render_template('/view.html', logs = logs)

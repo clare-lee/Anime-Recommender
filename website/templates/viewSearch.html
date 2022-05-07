@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %}Anime{% endblock title %}
+
+{% block content %}
+<br />
+<h1 style="text-align:center">Recommended Anime</h1>
+<h5 style="text-align:center">This is your recommendations</h5>
+<pre>
+    {% for anime in animelist %}
+    {{ anime }}
+    {% endfor %}
+</pre>
+{% endblock %}

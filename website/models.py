@@ -17,12 +17,14 @@ class User(db.Model, UserMixin):
 
 class Anime(db.Model):
     anime_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(45))
-    genre = db.Column(db.String(45))
-    medium = db.Column(db.String(45))
+    name = db.Column(db.String(250))
+    genre = db.Column(db.String(250))
+    medium = db.Column(db.String(250))
     episodes = db.Column(db.String(45))
     rating = db.Column(db.Float)
-    ratings = db.relationship('Rating')
+    binary_genres = db.Column(db.String(150))
+    members = db.Column(db.Integer)
+    #ratings = db.relationship('Rating')
 
 class Rating(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
