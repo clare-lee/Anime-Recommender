@@ -53,8 +53,9 @@ genre_list = {
     'genre43':'Yuri'
 }
 
+# general recommendation @home
 @views.route('/')
-def home():     # this function will run whenever we go to route
+def home():    
     
     rows = Anime.query.all()
 
@@ -102,40 +103,48 @@ def home():     # this function will run whenever we go to route
 
 @views.route('/anime')
 def anime_view():
-    #print(Anime.__table__)
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist)
 
 @views.route('/recommendation')
 def recommendation():
-
     return render_template("recommendation.html")
 
-# recommendation
+# recommendation by anime title
 @views.route('/title_search', methods=['POST'])
+@login_required 
 def search():
     
     anime = Anime.query.filter_by(name = request.form.get("anime_title")).first()
-    binary_genres = [int(i) for i in anime.binary_genres.split(",")]
-    neighbors = get_nearest_neighbors(binary_genres,11)
-    del neighbors[0]
+
+    ### TO DO: add a check if user searched anime is in db
+    ### TO DO: add auto complete 
     
-    #create log 
+
+    binary_genres = [int(i) for i in anime.binary_genres.split(",")]
+    # using recommender.py
+    neighbors = get_nearest_neighbors(binary_genres,11)
+    del neighbors[0]    # remove searched title from recommendations
+    
+    # create log 
     log = Log(
         data = str(neighbors),
         user_id = current_user.get_id()
     )
+
+    # post to db
     db.session.add(log)
     db.session.commit()
 
     return render_template('/viewSearch.html', animelist=neighbors)
     
-# recommendation
+# recommendation by genre selection
 @views.route('/genre_search', methods=['POST'])
 @login_required
 def genre_search():
-    genres = []
 
+    # convert user's genre selection into list of binary_genres
+    genres = []
     for i in range(1,44):
         if request.form.get(f'genre{i}') is not None:
             genres.append(1)
@@ -149,15 +158,23 @@ def genre_search():
         data = str(neighbors),
         user_id = current_user.get_id()
     )
+
+    # post to db
     db.session.add(log)
     db.session.commit()
 
     return render_template('/viewSearch.html', animelist=neighbors)
 
-# see log of recommendation
+# view log of all user's recommendations
 @views.route('/view', methods=['GET'])
 @login_required
 def view_log():
+
+    ### TO DO: if user has no recommendations, display a message
+    if Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all() == None:
+        pass
+
+    # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
 
     return render_template('/view.html', logs = logs)

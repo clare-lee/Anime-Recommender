@@ -58,6 +58,7 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))        
+            # once signed in direct to search recommedations
+            return redirect(url_for('views.recommendation'))        
 
     return render_template("sign_up.html", user=current_user)
