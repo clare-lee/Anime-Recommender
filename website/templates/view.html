@@ -3,12 +3,12 @@ content %}
 <br />
 <h1 style="text-align: center">Your Recommendation History</h1>
 
+<!-- TODO : let nav bar overlap div content -->
 <div>
     {% if logs is defined %}
 
-    <image height="80%" style="position: absolute; left: 0; bottom: 0" src="{{url_for('static',filename = 'hand.png')}}">
-    </image>
-    <p style="position: absolute; left: 50%; bottom: 50%" > <small>wow it's empty</small> </p>
+    <image height="80%" style="position: absolute; left: 0; bottom: 0" src="{{url_for('static',filename = 'hand.png')}}"></image>
+    <p style="position: absolute; left: 50%; bottom: 50%" > <small>it's empty yo</small> </p>
 
     {% else %}
     <pre style="border: 4px black solid">

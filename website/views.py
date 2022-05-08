@@ -64,8 +64,7 @@ def home():
     # rows[0] = <class 'website.models.Anime'>
 
     anime = pd.DataFrame([vars(r) for r in rows])
-    
-    # attempts
+
     #anime = pd.DataFrame(rows.objects.all().values())
     #anime = pd.DataFrame(rows, columns=['anime_id','Name','genre','medium','episodes','rating','binary_genres','members'])
 
@@ -99,16 +98,17 @@ def home():
     ovs = anime_ova.head(10)
     ovs = ovs['name']
 
-    return render_template("home.html", best_list=zip(tvs,mvs,ovs))
+    return render_template("home.html", best_list=zip(tvs,mvs,ovs), user=current_user)
 
 @views.route('/anime')
 def anime_view():
     animelist = Anime.query.all()
-    return render_template("anime.html", animelist = animelist)
+    return render_template("anime.html", animelist = animelist, user=current_user)
 
 @views.route('/recommendation')
+@login_required 
 def recommendation():
-    return render_template("recommendation.html")
+    return render_template("recommendation.html", user=current_user)
 
 # recommendation by anime title
 @views.route('/title_search', methods=['POST'])
@@ -136,7 +136,7 @@ def search():
     db.session.add(log)
     db.session.commit()
 
-    return render_template('/viewSearch.html', animelist=neighbors)
+    return render_template('/viewSearch.html', animelist=neighbors, user=current_user)
     
 # recommendation by genre selection
 @views.route('/genre_search', methods=['POST'])
@@ -163,18 +163,13 @@ def genre_search():
     db.session.add(log)
     db.session.commit()
 
-    return render_template('/viewSearch.html', animelist=neighbors)
+    return render_template('/viewSearch.html', animelist=neighbors, user=current_user)
 
 # view log of all user's recommendations
 @views.route('/view', methods=['GET'])
 @login_required
 def view_log():
-
-    ### TO DO: if user has no recommendations, display a message
-    # if Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all() == None:
-    #     pass
-
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
 
-    return render_template('/view.html', logs = logs)
+    return render_template('/view.html', logs = logs, user=current_user)

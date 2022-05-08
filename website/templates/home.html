@@ -2,24 +2,26 @@
 
 {% block content %}
 <br/>
-<h1 style="text-align:center">Welcome!</h1>
-<h5 style="text-align:center">Here are some general recommendations to start</h5>
+<h1 style="text-align:center">Welcome</h1>
+<h5 style="text-align:center">Here are some general recommendations</h5>
 <br/>
-    
-    <table  width="100%">
-        <tr>
-            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Animes</th>
-            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Movies</th>
-            <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best OVAs</th>
-        </tr>
-        {% for tvs, mvs, ovs in best_list %}
-        <tr>
-            <!--  TO DO : make scroll bar when too long -->
-            <td width="33%" style="padding-bottom: 10px;" >{{ "- " + tvs}}</td>
-            <td width="33%" >{{ "- " +mvs}}</td>
-            <td width="33%">{{ "- " +ovs}}</td>
-        </tr>
-    {% endfor %}
-    </table>    
-
+<br/>
+<table  width="100%">
+    <tr>
+        <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Animes</th>
+        <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best Movies</th>
+        <th style="text-align:center; font-size: large; padding-bottom: 2%; text-decoration: underline;">Best OVAs</th>
+    </tr>
+    {% for tvs, mvs, ovs in best_list %}
+    <tr>
+        <!--  TO DO : make scroll bar when too long -->
+        <td width="33%" style="padding-bottom: 10px;" >{{ "- " + tvs}}</td>
+        <td width="33%" >{{ "- " +mvs}}</td>
+        <td width="33%">{{ "- " +ovs}}</td>
+    </tr>
+{% endfor %}
+</table>    
+<br/>
+<br/>
+<h2 style="text-align:center">Be a member to get your own personalized recommendations!</h2>
 {% endblock %}
