@@ -3,9 +3,8 @@ content %}
 <br />
 <h1 style="text-align: center">Your Recommendation History</h1>
 
-<!-- TODO : let nav bar overlap div content -->
 <div>
-    {% if logs is defined %}
+    {% if logs|length  == 0 %}
 
     <image height="80%" style="position: absolute; left: 0; bottom: 0" src="{{url_for('static',filename = 'hand.png')}}"></image>
     <p style="position: absolute; left: 50%; bottom: 50%" > <small>it's empty yo</small> </p>
@@ -16,5 +15,6 @@ content %}
             {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
         {% endfor %}
         </pre>
-    {% endif %} {% endblock %}
+    {% endif %} 
 </div>
+{% endblock %}

@@ -59,14 +59,7 @@ def home():
     
     rows = Anime.query.all()
 
-    print(type(rows))
-    # rows = <class 'list'>
-    # rows[0] = <class 'website.models.Anime'>
-
     anime = pd.DataFrame([vars(r) for r in rows])
-
-    #anime = pd.DataFrame(rows.objects.all().values())
-    #anime = pd.DataFrame(rows, columns=['anime_id','Name','genre','medium','episodes','rating','binary_genres','members'])
 
     # The highest rated and most popular TV-series
     anime_tv = anime.loc[anime['medium'] == 'TV']
@@ -105,10 +98,11 @@ def anime_view():
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist, user=current_user)
 
-@views.route('/recommendation')
+@views.route('/recommendation', methods=['GET'])
 @login_required 
 def recommendation():
-    return render_template("recommendation.html", user=current_user)
+    anime = Anime.query.all()
+    return render_template("recommendation.html", user=current_user, anime = [i.name for i in anime])
 
 # recommendation by anime title
 @views.route('/title_search', methods=['POST'])
@@ -117,9 +111,8 @@ def search():
     
     anime = Anime.query.filter_by(name = request.form.get("anime_title")).first()
 
-    ### TO DO: add a check if user searched anime is in db
-    ### TO DO: add auto complete 
-    
+    if anime is None:
+        return render_template('/recommendation.html', animelist=[], user=current_user, error = "Anime name not found")
 
     binary_genres = [int(i) for i in anime.binary_genres.split(",")]
     # using recommender.py
@@ -172,4 +165,4 @@ def view_log():
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
 
-    return render_template('/view.html', logs = logs, user=current_user)
+    return render_template('/view.html', logs = logs, user = current_user)
