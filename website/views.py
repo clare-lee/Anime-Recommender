@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request
-from .models import Anime, Log
+from flask import Blueprint, render_template, request, flash
+from .models import Anime, Log, Favs
 from flask_login import login_required, current_user
 import pandas as pd
 from .recommender import get_nearest_neighbors
@@ -164,5 +164,33 @@ def genre_search():
 def view_log():
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
+    favs = Favs.query.filter_by(user_id = current_user.get_id()).all()
 
-    return render_template('/view.html', logs = logs, user = current_user)
+    return render_template('/view.html', logs = logs, user = current_user, favs = favs)
+
+# user adds favorite anime
+@views.route('/view', methods=['POST'])
+@login_required
+def save_favs():
+    if request.method == 'POST':
+        favs = request.form.get('fav')
+
+        if len(favs) < 1:
+            flash('Invalid Entry', category='error')
+        else:
+            new_fav = Favs(data=favs, user_id=current_user.id)
+            db.session.add(new_fav)
+            db.session.commit()
+            flash('Favorite added!', category='success')
+
+    return view_log()
+@views.route('/view', methods=['DELETE'])
+@login_required
+def delete_fav(): 
+    favid = request.json['favid']
+    fav = Favs.query.filter_by(id = favid).first()
+    if fav is not None:
+        db.session.delete(fav)
+        db.session.commit()
+        flash("Favorite Removed", category='success')
+    return "Success"

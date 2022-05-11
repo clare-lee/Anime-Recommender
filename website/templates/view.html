@@ -1,20 +1,67 @@
 {% extends "base.html" %} {% block title %}Anime{% endblock title %} {% block
 content %}
 <br />
-<h1 style="text-align: center">Your Recommendation History</h1>
+<h1 style="text-align: center">Your Page</h1>
+<br/>
+<br/>
+
 
 <div>
+    <!-- Recommendations -->
+    <h3 style="text-align: center">Recommendation History</h3>
     {% if logs|length  == 0 %}
 
     <image height="80%" style="position: absolute; left: 0; bottom: 0" src="{{url_for('static',filename = 'hand.png')}}"></image>
     <p style="position: absolute; left: 50%; bottom: 50%" > <small>it's empty yo</small> </p>
 
     {% else %}
-    <pre style="border: 4px black solid">
+    <pre style="border-radius: 3pt; border: 1px lightgrey solid">
         {% for log in logs %}
             {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
         {% endfor %}
-        </pre>
+    </pre>
+    <br />
+    
+    <!-- Favorites -->
+    <h3 style="text-align: center">Favorites List</h3>
+        <ul class="list-group list-group-flush" id="favs">
+            {% for fav in favs %}
+                <li class="list-group-item">
+                    {{ fav.data }}
+                    <button type="button" class="close" onClick="deleteNote({{ fav.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+    <br />
+    <form method="POST" action="/view">
+        <textarea name="fav" id="fav" class="form-control"></textarea>
+        <br/>
+        <div align="center">
+            <button type="submit" class="btn btn-secondary">Enter</button>
+        </div>
+    </form>
     {% endif %} 
-</div>
+</div> 
+{% endblock %}
+
+{% block header %}
+<script>
+    function deleteNote(id){
+        fetch("/view", {
+            method: "DELETE",
+            body: JSON.stringify({
+                favid: id
+            }),
+            headers:{
+                "Content-type": "application/json"
+            }
+        }).then(
+            response=>{
+                location.reload()
+            }
+        )
+    }
+</script>
 {% endblock %}
