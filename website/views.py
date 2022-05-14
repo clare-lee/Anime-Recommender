@@ -181,16 +181,19 @@ def save_favs():
             new_fav = Favs(data=favs, user_id=current_user.id)
             db.session.add(new_fav)
             db.session.commit()
-            flash('Favorite added!', category='success')
+            flash('Favorite Added', category='success')
 
     return view_log()
+    
 @views.route('/view', methods=['DELETE'])
 @login_required
 def delete_fav(): 
-    favid = request.json['favid']
-    fav = Favs.query.filter_by(id = favid).first()
-    if fav is not None:
-        db.session.delete(fav)
-        db.session.commit()
-        flash("Favorite Removed", category='success')
-    return "Success"
+    if request.method == 'DELETE':
+        favid = request.json['favid']
+        fav = Favs.query.filter_by(id = favid).first()
+        if fav is not None:
+            db.session.delete(fav)
+            db.session.commit()
+            flash("Favorite Removed", category='success')
+
+    return view_log()

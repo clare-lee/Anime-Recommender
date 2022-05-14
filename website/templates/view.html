@@ -24,10 +24,12 @@ content %}
     
     <!-- Favorites -->
     <h3 style="text-align: center">Favorites List</h3>
+        <!-- Lists Favorites -->
         <ul class="list-group list-group-flush" id="favs">
             {% for fav in favs %}
                 <li class="list-group-item">
                     {{ fav.data }}
+                    <!-- Deletes Favorite -->
                     <button type="button" class="close" onClick="deleteNote({{ fav.id }})">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -35,12 +37,15 @@ content %}
             {% endfor %}
         </ul>
     <br />
+    <!-- Add to Favorites -->
     <form method="POST" action="/view">
         <textarea name="fav" id="fav" class="form-control"></textarea>
         <br/>
         <div align="center">
             <button type="submit" class="btn btn-secondary">Enter</button>
         </div>
+        <br/>
+        <br/>
     </form>
     {% endif %} 
 </div> 
