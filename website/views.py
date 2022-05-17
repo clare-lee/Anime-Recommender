@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect
 from .models import Anime, Log, Favs
 from flask_login import login_required, current_user
 import pandas as pd
@@ -165,8 +165,9 @@ def view_log():
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
     favs = Favs.query.filter_by(user_id = current_user.get_id()).all()
+    anime = Anime.query.all()
 
-    return render_template('/view.html', logs = logs, user = current_user, favs = favs)
+    return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime])
 
 # user adds favorite anime
 @views.route('/view', methods=['POST'])
@@ -183,7 +184,7 @@ def save_favs():
             db.session.commit()
             flash('Favorite Added', category='success')
 
-    return view_log()
+    return redirect('/view')
     
 @views.route('/view', methods=['DELETE'])
 @login_required
@@ -191,6 +192,7 @@ def delete_fav():
     if request.method == 'DELETE':
         favid = request.json['favid']
         fav = Favs.query.filter_by(id = favid).first()
+        print(fav)
         if fav is not None:
             db.session.delete(fav)
             db.session.commit()

@@ -4,7 +4,7 @@
 
 > git clone <repo-url>
 
-> python3.9 -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas
+> python -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas 
 
 <h2> Setup Database </h2>
   
@@ -28,6 +28,6 @@ LOAD DATA LOCAL INFILE 'path to anime.csv' INTO TABLE anime FIELDS TERMINATED BY
 
 <h2> Running the App </h2>
   
-> python3.9 main.py
+> python main.py
 
 <h2> Viewing the App </h2>

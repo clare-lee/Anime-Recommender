@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% block title %}Anime{% endblock title %} {% block
-content %}
+{% extends "base.html" %} {% block title %}Anime{% endblock title %} 
+
+{% block content %}
 <br />
 <h1 style="text-align: center">Your Page</h1>
 <br/>
@@ -39,7 +40,7 @@ content %}
     <br />
     <!-- Add to Favorites -->
     <form method="POST" action="/view">
-        <textarea name="fav" id="fav" class="form-control"></textarea>
+        <input name="fav" id="fav" class="form-control" />
         <br/>
         <div align="center">
             <button type="submit" class="btn btn-secondary">Enter</button>
@@ -53,6 +54,18 @@ content %}
 
 {% block header %}
 <script>
+    $( function() {
+      var availableTags = [
+          {% for name in anime %}
+              "{{name}}",
+          {% endfor %}
+      ];
+      $( "#fav" ).autocomplete({
+        source: availableTags, 
+        minLength: 3
+      });
+    } );
+
     function deleteNote(id){
         fetch("/view", {
             method: "DELETE",
