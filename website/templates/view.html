@@ -18,7 +18,8 @@
     {% else %}
     <pre style="border-radius: 3pt; border: 1px lightgrey solid">
         {% for log in logs %}
-            {{ log.date.strftime("%A %B %d, %Y") }} - {{ log.data}} 
+            {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.split(',') %}
+                -{{ name }} {% endfor %}
         {% endfor %}
     </pre>
     <br />
