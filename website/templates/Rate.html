@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %}Anime{% endblock title %}
+
+{% block content %}
+<br />
+<h1 style="text-align:center">Give it a rating</h1>
+<h5 style="text-align:center">This is the list of all the animes in our database</h5>
+<pre>
+    {% for anime in animelist %}
+    {{ anime.name }}
+    {% endfor %}
+</pre>
+{% endblock %}

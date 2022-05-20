@@ -1,7 +1,6 @@
 {% extends "base.html" %} {% block title %}Anime{% endblock title %} 
 
 {% block content %}
-<body background="{{ url_for('static', filename='image.png') }}"> 
 <br />
 <h1 style="text-align: center">Your Page</h1>
 <br/>
@@ -15,7 +14,7 @@
     <p style="position: absolute; left: 50%; bottom: 50%" > <small>it's empty yo</small> </p>
 
     {% else %}
-    <div style="background-color: rgba(0,0,0,.2)">
+    <div height=30%>
     <pre style="border-radius: 3pt; border: 1px lightgrey solid">
         {% for log in logs %}
             {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.split(',') %}
@@ -50,6 +49,49 @@
         <br/>
         <br/>
     </form>
+     <!-- Rate the anime -->
+     <h3 style="text-align: center">Give a Rating</h3>
+
+     <form method="POST" action="/rate">
+        <input name="anime" id="anime" class="form-control" />
+        <select name="rating" id="rating" class="form-control"> 
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        <br/>
+        <div align="center">
+            <button type="submit" class="btn btn-secondary">Enter</button>
+        </div>
+        <br/>
+        <br/>
+    </form>
+
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+            <div class="card-header" role="tab" id="headingOne">
+                <a text-decoration="none"; data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    See Past Ratings
+                </a>
+
+                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                    <pre class="card-body">
+                    {% for rating in ratings %}
+        {{ rating.rating }}: {{ rating.anime.name }} {% endfor %}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+
     {% endif %} 
 </div> 
 {% endblock %}
@@ -62,7 +104,7 @@
               "{{name}}",
           {% endfor %}
       ];
-      $( "#fav" ).autocomplete({
+      $( "#fav , #anime" ).autocomplete({
         source: availableTags, 
         minLength: 3
       });

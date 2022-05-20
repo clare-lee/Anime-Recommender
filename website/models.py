@@ -36,4 +36,5 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     anime_id = db.Column(db.Integer, db.ForeignKey('anime.anime_id'), primary_key=True)
     rating = db.Column(db.Integer)
+    anime = db.relationship('Anime',lazy = 'joined') # when retrieve rating, also retrieve anime associated with it
     

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect
-from .models import Anime, Log, Favs
+from .models import Anime, Log, Favs, Rating
 from flask_login import login_required, current_user
 import pandas as pd
 from .recommender import get_nearest_neighbors
@@ -166,8 +166,10 @@ def view_log():
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
     favs = Favs.query.filter_by(user_id = current_user.get_id()).all()
     anime = Anime.query.all()
+    ratings = Rating.query.filter_by(user_id = current_user.get_id()).all()
+    ratings.sort(key=lambda x: x.anime.name)
 
-    return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime])
+    return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime], ratings = ratings)
 
 # user adds favorite anime
 @views.route('/view', methods=['POST'])
@@ -199,3 +201,22 @@ def delete_fav():
             flash("Favorite Removed", category='success')
 
     return view_log()
+
+# user adds rating
+@views.route('/rate', methods=['POST'])
+@login_required
+def add_rating():
+    if request.method == 'POST':
+        rating = request.form.get('rating')
+        anime = request.form.get('anime')
+
+        if len(anime) < 1:
+            flash('Invalid Entry', category='error')
+        else:
+            Animeobj = Anime.query.filter_by(name = anime).first()
+            new_rating = Rating(rating=rating, anime_id=Animeobj.anime_id, user_id=current_user.id)
+            db.session.add(new_rating)
+            db.session.commit()
+            flash('Anime rated!', category='success')
+
+    return redirect('/view')

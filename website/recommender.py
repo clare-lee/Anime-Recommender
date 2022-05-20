@@ -6,8 +6,8 @@ from .models import Anime
 from sqlalchemy.sql import func
 
 def anime_formatter():
-    animelist = Anime.query
-    .with_entities(func.avg(Anime.ratings.rating)).all()
+    animelist = Anime.query.all()
+    # .with_entities(func.avg(Anime.ratings.rating))
     anime_dictionary = []
     print(animelist[0])
 
@@ -33,16 +33,16 @@ def get_nearest_neighbors(genre_list: list, K: int):
         neighbors.append(distances[i][0])
     return neighbors
 
-def get_nearest_neighbors_by_rating(anime_id: int, K: int):
-    distances = []
-    anime_dictionary = anime_formatter()
+# def get_nearest_neighbors_by_rating(anime_id: int, K: int):
+#     distances = []
+#     anime_dictionary = anime_formatter()
     
-    for anime in anime_dictionary:
-        dist = get_distance(genre_list, anime[1]) 
-        distances.append((anime[0], dist))
+#     for anime in anime_dictionary:
+#         dist = get_distance(genre_list, anime[1]) 
+#         distances.append((anime[0], dist))
 
-    distances.sort(key=operator.itemgetter(1)) # Sort the distances of animes
-    neighbors = []
-    for i in range(K):
-        neighbors.append(distances[i][0])
-    return neighbors
+#     distances.sort(key=operator.itemgetter(1)) # Sort the distances of animes
+#     neighbors = []
+#     for i in range(K):
+#         neighbors.append(distances[i][0])
+#     return neighbors
