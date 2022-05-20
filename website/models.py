@@ -30,7 +30,7 @@ class Anime(db.Model):
     rating = db.Column(db.Float)
     binary_genres = db.Column(db.String(150))
     members = db.Column(db.Integer)
-    #ratings = db.relationship('Rating')
+    ratings = db.relationship('Rating')
 
 class Rating(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)

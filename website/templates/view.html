@@ -1,12 +1,11 @@
 {% extends "base.html" %} {% block title %}Anime{% endblock title %} 
 
 {% block content %}
+<body background="{{ url_for('static', filename='image.png') }}"> 
 <br />
 <h1 style="text-align: center">Your Page</h1>
 <br/>
 <br/>
-
-
 <div>
     <!-- Recommendations -->
     <h3 style="text-align: center">Recommendation History</h3>
@@ -16,12 +15,14 @@
     <p style="position: absolute; left: 50%; bottom: 50%" > <small>it's empty yo</small> </p>
 
     {% else %}
+    <div style="background-color: rgba(0,0,0,.2)">
     <pre style="border-radius: 3pt; border: 1px lightgrey solid">
         {% for log in logs %}
             {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.split(',') %}
                 -{{ name }} {% endfor %}
         {% endfor %}
     </pre>
+    </div>  
     <br />
     
     <!-- Favorites -->
