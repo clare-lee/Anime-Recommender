@@ -1,3 +1,6 @@
+CREATE DATABASE Recommender; 
+USE Recommender;
+
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(150) DEFAULT NULL,
@@ -5,7 +8,7 @@ CREATE TABLE `user` (
   `first_name` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-);
+) AUTO_INCREMENT = 50;
 
 CREATE TABLE `log` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -14,7 +17,7 @@ CREATE TABLE `log` (
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `log_user_fk_idx` (`user_id`),
-  CONSTRAINT `log_user_fk` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
+  CONSTRAINT `log_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
 
 CREATE TABLE `favs` (
@@ -24,7 +27,7 @@ CREATE TABLE `favs` (
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fav_user_fk_idx` (`user_id`),
-  CONSTRAINT `fav_user_fk` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
+  CONSTRAINT `fav_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
 
 CREATE TABLE `anime` (
@@ -39,12 +42,16 @@ CREATE TABLE `anime` (
   PRIMARY KEY (`anime_id`)
 );
 
-CREATE TABLE `rating` (
+Create TABLE `rating` (
   `user_id` int NOT NULL,
   `anime_id` int NOT NULL,
   `rating` int NOT NULL,
-  PRIMARY KEY (`user_id`,`anime_id`)
-); 
+  PRIMARY KEY(`user_id`, `anime_id`)
+);
 
 commit;
 
+INSERT INTO `user`(`email`,`password`,`first_name`) VALUES('testuser@test.com', 'sha256$EcUXHo7fqvRSjuq3$d9e050dd4f2d03eb536161d1d98e16e3eaa365d6e100c333df555851b1fe247d', 'Test');
+
+LOAD DATA LOCAL INFILE 'anime.csv' INTO TABLE anime FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE 'ratings.csv' INTO TABLE rating FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 LINES;

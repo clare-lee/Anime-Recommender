@@ -15,7 +15,7 @@
 
     {% else %}
     <div height=30%>
-    <pre style="border-radius: 3pt; border: 1px lightgrey solid">
+    <pre style="border-radius: 3pt; border: 1px lightgrey solid; height:400px; overflow-y:auto" >
         {% for log in logs %}
             {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.replace('[', '').replace(']', '').split(', ') %}
                 - {{ name.replace("'", "") }} {% endfor %}
