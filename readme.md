@@ -18,13 +18,6 @@ Create Database
 CREATE DATABASE Recommender;  
 ```  
 
-Create User
-```sql
-CREATE USER 'anime_user'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON Recommender.* TO 'anime_user'@'localhost';
-FLUSH PRIVILEGES;
-```
-
 Create Table
 ```sql
 USE Recommender;
@@ -34,6 +27,7 @@ SOURCE CreateTables.sql;
 Load Table
 ```sql
 LOAD DATA LOCAL INFILE 'path to anime.csv' INTO TABLE anime FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE 'path to ratings.csv' INTO TABLE rating FIELDS TERMINATED BY ',' IGNORE 1 LINES;
 ```
 
 <h2> Running the App </h2>

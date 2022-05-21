@@ -167,7 +167,7 @@ def view_log():
     favs = Favs.query.filter_by(user_id = current_user.get_id()).all()
     anime = Anime.query.all()
     ratings = Rating.query.filter_by(user_id = current_user.get_id()).all()
-    ratings.sort(key=lambda x: x.anime.name)
+    #ratings.sort(key=lambda x: x.anime.name)
 
     return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime], ratings = ratings)
 

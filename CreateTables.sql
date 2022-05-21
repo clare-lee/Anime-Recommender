@@ -1,4 +1,4 @@
-CREATE TABLE `User` (
+CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(150) DEFAULT NULL,
   `password` varchar(150) DEFAULT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE `User` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 );
 
-CREATE TABLE `Log` (
+CREATE TABLE `log` (
   `id` int NOT NULL AUTO_INCREMENT,
   `data` text,
   `date` datetime DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `Log` (
   CONSTRAINT `log_user_fk` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`)
 );
 
-CREATE TABLE `Favs` (
+CREATE TABLE `favs` (
   `id` int NOT NULL AUTO_INCREMENT,
   `data` text COLLATE utf32_unicode_ci,
   `date` datetime DEFAULT NULL,
