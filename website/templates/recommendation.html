@@ -1,4 +1,5 @@
 {% extends "base.html" %} {% block title %}Recommendations{% endblock title %}
+
 {% block header %}
 
 <script>
@@ -25,7 +26,7 @@
         {{error}}
       </div>
     {% endif %}
-  <div class="form-group">
+  <div class="form-group" >
     <label for="anime_title">Get recommendations based on title</label>
     <input
       type="text"
@@ -41,7 +42,7 @@
 <p>or</p>
 <br />
 <form method="POST" action="/genre_search">
-  <div class="form-group">
+  <div class="form-group" >
     <label for="genres">Get recommendations based on genres</label>
     <br />
     <table class="table">

@@ -168,8 +168,6 @@ def view_log():
     anime = Anime.query.all()
     ratings = Rating.query.filter_by(user_id = current_user.get_id()).all()
     ratings.sort(key=lambda x: x.anime.name)
-    get_nearest_w_user(5,10)
-    
     return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime], ratings = ratings)
 
 # user adds favorite anime
@@ -188,7 +186,8 @@ def save_favs():
             flash('Favorite Added', category='success')
 
     return redirect('/view')
-    
+
+# user deletes favorite anime    
 @views.route('/view', methods=['DELETE'])
 @login_required
 def delete_fav(): 

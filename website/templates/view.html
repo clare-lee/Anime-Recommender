@@ -5,7 +5,7 @@
 <h1 style="text-align: center">Your Page</h1>
 <br/>
 <br/>
-<div>
+<div ">
     <!-- Recommendations -->
     <h3 style="text-align: center">Recommendation History</h3>
     {% if logs|length  == 0 %}
@@ -81,7 +81,7 @@
                     See Past Ratings
                 </a>
 
-                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                     <pre class="card-body">
                     {% for rating in ratings %}
         {{ rating.rating }}: {{ rating.anime.name }} {% endfor %}
