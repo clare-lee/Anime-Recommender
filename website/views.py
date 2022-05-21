@@ -116,7 +116,8 @@ def search():
 
     binary_genres = [int(i) for i in anime.binary_genres.split(",")]
     # using recommender.py
-    neighbors = get_nearest_neighbors(binary_genres,11)
+    #neighbors = get_nearest_neighbors(binary_genres,11)
+    neighbors = find_neighbors(anime,11)
     del neighbors[0]    # remove searched title from recommendations
     
     # create log 

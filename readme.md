@@ -4,9 +4,10 @@
 
 > git clone <repo-url>
 
-> python -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas PyMySql
+> python -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas PyMySql scikit-learn
 
 ## Setup Database 
+Install or have MySQL installed
   
 Login MySQL 
 ```sql
@@ -27,7 +28,3 @@ SOURCE CreateTables.sql;
 ## Viewing the App 
 
 > http://127.0.0.1:5000/
-
-Login in with the test user 
-> email: testuser@test.com
-> password: password
