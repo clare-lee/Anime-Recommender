@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 from scipy import spatial
+import numpy as np
 import operator
 
 anime_csv = pd.read_csv("anime.csv")
@@ -34,17 +35,13 @@ def get_nearest_neighbors(genre_list: list, K: int):
 
 with open("ratings.csv", "w+") as file: 
     file.write("user_id,anime_id,rating\n")
-    for user in range(50):
-        try:
-            anime = anime_csv.sample()
-            genres = [int(i) for i in  anime['binary_genres'].item().split(', ') ]
-            neighbors = get_nearest_neighbors(genres,20)
-            #print(neighbors)
-            value = 1
-
-            for rating in neighbors:
-                value = random.randint(1,5)
-                file.write(f"{user}, {rating}, {value}\n")
-        except Exception as e:
-            print(e)
-            pass
+    for index, anime in anime_csv.iterrows():
+        users = []
+        for user in range(10):
+            user_id = random.randint(1,49)
+            while user_id in users:
+                user_id = random.randint(1,49)
+            users.append(user_id)
+            value = random.randint(5,10)
+            file.write(f"{user_id}, {anime[0]}, {value}\n")
+ 

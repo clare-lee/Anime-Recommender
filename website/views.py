@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect
 from .models import Anime, Log, Favs, Rating
 from flask_login import login_required, current_user
 import pandas as pd
-from .recommender import get_nearest_neighbors
+from .recommender import get_nearest_neighbors, get_nearest_w_user
 from . import db
 
 views = Blueprint('views', __name__)
@@ -168,7 +168,8 @@ def view_log():
     anime = Anime.query.all()
     ratings = Rating.query.filter_by(user_id = current_user.get_id()).all()
     ratings.sort(key=lambda x: x.anime.name)
-
+    get_nearest_w_user(5,10)
+    
     return render_template('/view.html', logs = logs, user = current_user, favs = favs, anime = [i.name for i in anime], ratings = ratings)
 
 # user adds favorite anime
