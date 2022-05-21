@@ -39,5 +39,12 @@ CREATE TABLE `anime` (
   PRIMARY KEY (`anime_id`)
 );
 
+CREATE TABLE `rating` (
+  `user_id` int NOT NULL,
+  `anime_id` int NOT NULL,
+  `rating` int NOT NULL,
+  PRIMARY KEY (`user_id`,`anime_id`)
+); 
+
 commit;
 
