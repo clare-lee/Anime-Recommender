@@ -4,7 +4,7 @@
 
 > git clone <repo-url>
 
-> python -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas 
+> python -m pip install scipy flask flask-sqlalchemy flask-login sqlalchemy werkzeug pandas PyMySql
 
 <h2> Setup Database </h2>
   
@@ -17,9 +17,19 @@ Create Database
 ```sql
 CREATE DATABASE Recommender;  
 ```  
-  
+
+Create User
+```sql
+CREATE USER 'anime_user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON Recommender.* TO 'anime_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
 Create Table
-> Using CreateTable.sql
+```sql
+USE Recommender;
+SOURCE CreateTables.sql;
+```
   
 Load Table
 ```sql

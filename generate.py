@@ -22,8 +22,6 @@ def get_distance(genre_1, genre_2):
 anime_dictionary = anime_formatter()
 def get_nearest_neighbors(genre_list: list, K: int):
     distances = []
-    
-    
     for anime in anime_dictionary:
         dist = get_distance(genre_list, anime[1]) 
         distances.append((anime[0], dist))

@@ -17,8 +17,8 @@
     <div height=30%>
     <pre style="border-radius: 3pt; border: 1px lightgrey solid">
         {% for log in logs %}
-            {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.split(',') %}
-                -{{ name }} {% endfor %}
+            {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.replace('[', '').replace(']', '').split(', ') %}
+                - {{ name.replace("'", "") }} {% endfor %}
         {% endfor %}
     </pre>
     </div>  
@@ -77,7 +77,7 @@
     <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
         <div class="card card-plain">
             <div class="card-header" role="tab" id="headingOne">
-                <a text-decoration="none"; data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <a style="text-decoration:none; color:black" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     See Past Ratings
                 </a>
 
