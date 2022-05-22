@@ -53,7 +53,7 @@ genre_list = {
     'genre43':'Yuri'
 }
 
-# general recommendation @home
+# welcom page's general recommendation
 @views.route('/')
 def home():    
     
@@ -93,11 +93,13 @@ def home():
 
     return render_template("home.html", best_list=zip(tvs,mvs,ovs), user=current_user)
 
+# anime page listing all animes in db
 @views.route('/anime')
 def anime_view():
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist, user=current_user)
 
+# 
 @views.route('/recommendation', methods=['GET'])
 @login_required 
 def recommendation():
@@ -116,15 +118,14 @@ def search():
 
     binary_genres = [int(i) for i in anime.binary_genres.split(",")]
     # using recommender.py
-    #neighbors = get_nearest_neighbors(binary_genres,11)
-    neighbors = find_neighbors(anime,11)
+    neighbors = get_nearest_neighbors(binary_genres,11)
+    #neighbors = find_neighbors(anime,11)
     del neighbors[0]    # remove searched title from recommendations
     
     # create log 
     log = Log(
         data = str(neighbors),
-        user_id = current_user.get_id()
-    )
+        user_id = current_user.get_id())
 
     # post to db
     db.session.add(log)
@@ -159,13 +160,24 @@ def genre_search():
 
     return render_template('/viewSearch.html', animelist=neighbors, user=current_user)
 
+# @views.route('/viewSearch', methods=['POST'])
+# @login_required
+# def genre_search2():
+
+#     genres =
+
+
+
+
 # view log of all user's recommendations
 @views.route('/view', methods=['GET'])
 @login_required
 def view_log():
     # view logs sorted by recent
     logs = Log.query.filter_by(user_id = current_user.get_id()).order_by(Log.date.desc()).all()
+    # view favs
     favs = Favs.query.filter_by(user_id = current_user.get_id()).all()
+    # view rating + anime
     anime = Anime.query.all()
     ratings = Rating.query.filter_by(user_id = current_user.get_id()).all()
     ratings.sort(key=lambda x: x.anime.name)
@@ -177,7 +189,7 @@ def view_log():
 def save_favs():
     if request.method == 'POST':
         favs = request.form.get('fav')
-
+        # prevents submitting empty 
         if len(favs) < 1:
             flash('Invalid Entry', category='error')
         else:
@@ -195,7 +207,7 @@ def delete_fav():
     if request.method == 'DELETE':
         favid = request.json['favid']
         fav = Favs.query.filter_by(id = favid).first()
-        print(fav)
+        
         if fav is not None:
             db.session.delete(fav)
             db.session.commit()

@@ -5,7 +5,7 @@
 <h1 style="text-align: center">Your Page</h1>
 <br/>
 <br/>
-<div ">
+<div>
     <!-- Recommendations -->
     <h3 style="text-align: center">Recommendation History</h3>
     {% if logs|length  == 0 %}
@@ -17,8 +17,8 @@
     <div height=30%>
     <pre style="border-radius: 3pt; border: 1px lightgrey solid; height:400px; overflow-y:auto" >
         {% for log in logs %}
-            {{ log.date.strftime("%A %B %d, %Y") }} - {% for name in log.data.replace('[', '').replace(']', '').split(', ') %}
-                - {{ name.replace("'", "") }} {% endfor %}
+            {{ log.date.strftime("%A %B %d, %Y") }} {% for name in log.data.replace('[', '').replace(']', '').split(', ') %}
+                                    - {{ name.replace("'", "") }} {% endfor %}
         {% endfor %}
     </pre>
     </div>  
@@ -90,6 +90,7 @@
             </div>
         </div>
     </div>
+    <br/>
     <br/>
 
     {% endif %} 
