@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect
 from .models import Anime, Log, Favs, Rating
 from flask_login import login_required, current_user
 import pandas as pd
-from .recommender import get_nearest_neighbors, get_nearest_w_user
+from .recommender import get_nearest_neighbors, get_nearest_w_user, find_neighbors
 from . import db
 
 views = Blueprint('views', __name__)
@@ -99,7 +99,7 @@ def anime_view():
     animelist = Anime.query.all()
     return render_template("anime.html", animelist = animelist, user=current_user)
 
-# 
+# gets user input for recommendation
 @views.route('/recommendation', methods=['GET'])
 @login_required 
 def recommendation():
@@ -109,7 +109,7 @@ def recommendation():
 # recommendation by anime title
 @views.route('/title_search', methods=['POST'])
 @login_required 
-def search():
+def title_search():
     
     anime = Anime.query.filter_by(name = request.form.get("anime_title")).first()
 
@@ -117,11 +117,18 @@ def search():
         return render_template('/recommendation.html', animelist=[], user=current_user, error = "Anime name not found")
 
     binary_genres = [int(i) for i in anime.binary_genres.split(",")]
-    # using recommender.py
-    neighbors = get_nearest_neighbors(binary_genres,11)
+
     #neighbors = find_neighbors(anime,11)
-    del neighbors[0]    # remove searched title from recommendations
-    
+    #neighbors = get_nearest_w_user(current_user, 11)
+    neighbors = get_nearest_neighbors(binary_genres,11)
+
+    title_search = request.form.get("anime_title")
+    for i, neighbor in enumerate(neighbors):
+        if neighbor == title_search:    #  or title_search in neighbor  
+            del neighbors[i]
+
+    neighbors[:10]
+ 
     # create log 
     log = Log(
         data = str(neighbors),
