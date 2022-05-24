@@ -116,19 +116,9 @@ def title_search():
     if anime is None:
         return render_template('/recommendation.html', animelist=[], user=current_user, error = "Anime name not found")
 
-    binary_genres = [int(i) for i in anime.binary_genres.split(",")]
+    neighbors = get_nearest_neighbors([anime.anime_id],11)
+    #neighbors = find_neighbors(anime,10)
 
-    #neighbors = find_neighbors(anime,11)
-    #neighbors = get_nearest_w_user(current_user, 11)
-    neighbors = get_nearest_neighbors(binary_genres,11)
-
-    title_search = request.form.get("anime_title")
-    for i, neighbor in enumerate(neighbors):
-        if neighbor == title_search:    #  or title_search in neighbor  
-            del neighbors[i]
-
-    neighbors[:10]
- 
     # create log 
     log = Log(
         data = str(neighbors),
@@ -166,15 +156,6 @@ def genre_search():
     db.session.commit()
 
     return render_template('/viewSearch.html', animelist=neighbors, user=current_user)
-
-# @views.route('/viewSearch', methods=['POST'])
-# @login_required
-# def genre_search2():
-
-#     genres =
-
-
-
 
 # view log of all user's recommendations
 @views.route('/view', methods=['GET'])

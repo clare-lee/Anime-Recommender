@@ -9,31 +9,12 @@ from sqlalchemy.sql import func
 from . import db
 
 
-# def anime_formatter():
-#     animelist = Anime.query.all()
-#     anime_dictionary = []
-
-#     for anime in animelist:
-#         anime_dictionary.append([anime.name, [int(i) for i in anime.binary_genres.split(",")]])
-#     return anime_dictionary
-
-# def get_distance(genre_1, genre_2):
-#     genre_similarity = spatial.distance.cosine(genre_1, genre_2)
-#     return genre_similarity
-
-# def get_nearest_neighbors(genre_list: list, K: int):
-#     distances = []
-#     anime_dictionary = anime_formatter()
-    
-#     for anime in anime_dictionary:
-#         dist = get_distance(genre_list, anime[1]) 
-#         distances.append((anime[0], dist))
-
-#     distances.sort(key=operator.itemgetter(1)) # Sort the distances of animes
-#     neighbors = []
-#     for i in range(K):
-#         neighbors.append(distances[i][0])
-#     return neighbors
+def get_distance(genre_1, genre_2):
+    # fix issue of all 0 genres binary from having 0 distance
+    if sum(genre_1) == 0 or sum(genre_2) == 0:
+        return 1
+    genre_similarity = spatial.distance.cosine(genre_1, genre_2)
+    return genre_similarity
 
 def anime_formatter():
     # create a df containing averaged normalized anime ratings
@@ -47,38 +28,31 @@ def anime_formatter():
     anime_dictionary = {}
     for anime in animelist:
         anime_dictionary[anime.anime_id]=[anime.name, [int(i) for i in anime.binary_genres.split(
-            ",")], rating_set_norm.loc[anime.anime_id].get('size'), ratings.loc[anime.anime_id].get('mean')]
+            ",")], rating_set_norm.loc[anime.anime_id].get('size'), 
+            ratings.loc[anime.anime_id].get('mean')]
     return anime_dictionary
 
-def get_genre_distance(anime_one, anime_two):
-    genre_similarity = 0
-    isValid = 1
-    same_type = 1
-   
-    genre_one = anime_one[6].split(',')
-    genre_two = anime_two[6].split(',')
-    
-    genre_one[x] = int(genre_one[x])
-    genre_two[x] = int(genre_two[x])
-
-    genre_similarity = spatial.distance.cosine(genre_one, genre_two)
-    return genre_similarity
-
 def get_distance_w_popularity(anime_1, anime_2):
+    if sum(anime_1[1]) == 0 or sum(anime_2[1]) == 0:
+        return 1
     # gets distance based on how genre similarity
     genre_similarity = spatial.distance.cosine(anime_1[1], anime_2[1])
     # gets how close animes are
     popularity_distance = abs(anime_1[2]-anime_2[2])
-    return genre_similarity + popularity_distance
+    return genre_similarity*2 + popularity_distance
 
 # creates recommendation on similar genres
-def get_nearest_neighbors(genre_list: list, K: int):
+def get_nearest_neighbors(anime_, K: int):
     distances=[]
     anime_dictionary = anime_formatter()
-
+    test = anime_
+    if anime_[0] != 0:
+        test = anime_dictionary[anime_[0]]
     # gets distances of all animes
-    for anime in anime_dictionary.values():
-        dist = get_distance_w_popularity([0, genre_list, 1], anime)
+    for anime in anime_dictionary.values():  
+        if test[0] == anime[0]:
+            continue     
+        dist = get_distance_w_popularity(test, anime)
         distances.append((anime[0], dist))
 
     # organizes animes by thoses with closest distance or most similar animes
@@ -88,6 +62,7 @@ def get_nearest_neighbors(genre_list: list, K: int):
     # gets K number of animes
     for i in range(K):
         neighbors.append(distances[i][0])
+
     return neighbors
 
 # creates the recommendation based off users ratings from ideal genres list
@@ -108,8 +83,19 @@ def get_nearest_w_user(user_id: int, K: int):
             genres_list[i] = 1
         else:
             genres_list[i] = 0
-    print("get nearest w user")
-    return get_nearest_neighbors(genres_list, K)
+    return get_nearest_neighbors([0, genres_list, 1], K)
+
+def get_genre_distance(anime_one, anime_two):
+    genre_similarity = 0
+    isValid = 1
+    same_type = 1
+   
+    genre_one = [int(i) for i in anime_one.binary_genres.split(',')]
+    genre_two = [int(i) for i in anime_two.binary_genres.split(',')]
+
+
+    genre_similarity = spatial.distance.cosine(genre_one, genre_two)
+    return genre_similarity
 
 # gets distance using anime rating
 def get_rating_distance(anime_1, anime_2):
@@ -121,10 +107,10 @@ def get_rating_distance(anime_1, anime_2):
 # get distance using popularity
 def get_members_distance(anime_1, anime_2):
     members_distance = 0.0
-    if (([not s or s.isspace() for s in anime_1[7]]) and ([not sp or sp.isspace() for sp in anime_2[7]])):
-        members_array = np.array([[int(anime_1[7]), int(anime_2[7])]])
-        members_array = preprocessing.normalize(members_array)
-        members_distance += (members_array[0][0] - members_array[0][1])**2
+
+    members_array = np.array([[int(anime_1.members), int(anime_2.members)]])
+    members_array = preprocessing.normalize(members_array)
+    members_distance += (members_array[0][0] - members_array[0][1])**2
     return members_distance
 
 # get's total distance 
@@ -141,9 +127,9 @@ def find_neighbors(test_anime, k_neighbors):
     distances = list()
     animes = pd.read_sql("SELECT * FROM anime", db.engine)
     #animes = load_csv("anime.csv")
-    for i in range(1, len(animes)):
-        calculated_distance = calc_euclidean_distance(test_anime, animes[i])
-        distances.append((animes[i][1], calculated_distance))    
+    for index, anime in animes.iterrows():
+        calculated_distance = calc_euclidean_distance(test_anime, anime)
+        distances.append((anime[1], calculated_distance))    
     distances.sort(key=lambda tup: tup[1])
     neighbors = list()
     for i in range(k_neighbors):
