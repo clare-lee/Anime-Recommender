@@ -39,7 +39,8 @@ CREATE TABLE `anime` (
   `rating` float NOT NULL,
   `binary_genres` varchar(150) NOT NULL,
   `members` int NOT NULL,
-  PRIMARY KEY (`anime_id`)
+  PRIMARY KEY (`anime_id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
 );
 
 Create TABLE `rating` (
