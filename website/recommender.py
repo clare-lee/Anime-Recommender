@@ -4,7 +4,8 @@ import operator
 import numpy as np
 from scipy import spatial
 from sklearn import preprocessing
-from .models import Anime, User, Rating
+from .models import Anime, User, Rating, Log
+from flask_login import current_user
 from sqlalchemy.sql import func
 from . import db
 
@@ -44,12 +45,24 @@ def get_distance_w_popularity(anime_1, anime_2):
 # creates recommendation on similar genres
 def get_nearest_neighbors(anime_, K: int):
     distances=[]
+
+    logs = Log.query.filter_by(user_id=current_user.get_id()).all()
+
     anime_dictionary = anime_formatter()
+    filtered = []
+
+    for log in logs:
+        filtered.extend(eval(log.data))
+
+    filtered = set(filtered)
+
+    filtered_dictionary = [i for i in anime_dictionary.values() if not i[0] in filtered]
+
     test = anime_
     if anime_[0] != 0:
         test = anime_dictionary[anime_[0]]
     # gets distances of all animes
-    for anime in anime_dictionary.values():  
+    for anime in filtered_dictionary:  
         if test[0] == anime[0]:
             continue     
         dist = get_distance_w_popularity(test, anime)

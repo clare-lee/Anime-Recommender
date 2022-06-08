@@ -53,7 +53,8 @@ genre_list = {
     'genre43':'Yuri'
 }
 
-# welcom page's general recommendation
+
+# welcome page's general recommendation
 @views.route('/')
 def home():    
     
@@ -143,7 +144,7 @@ def genre_search():
         else:
             genres.append(0)
 
-    neighbors = get_nearest_neighbors(genres,10)
+    neighbors = get_nearest_neighbors([0,genres,0,0],10)
 
     #create log 
     log = Log(
