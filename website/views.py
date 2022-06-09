@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect
 from .models import Anime, Log, Favs, Rating
 from flask_login import login_required, current_user
 import pandas as pd
-from .recommender import get_nearest_neighbors, get_nearest_w_user, find_neighbors
+from .recommender import get_nearest_neighbors, get_nearest_w_user
 from . import db
 
 views = Blueprint('views', __name__)

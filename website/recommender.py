@@ -30,7 +30,7 @@ def anime_formatter():
     for anime in animelist:
         anime_dictionary[anime.anime_id]=[anime.name, [int(i) for i in anime.binary_genres.split(
             ",")], rating_set_norm.loc[anime.anime_id].get('size'), 
-            ratings.loc[anime.anime_id].get('mean')]
+            ratings.loc[anime.anime_id].get('mean'), anime.members]
     return anime_dictionary
 
 def get_distance_w_popularity(anime_1, anime_2):
@@ -40,7 +40,7 @@ def get_distance_w_popularity(anime_1, anime_2):
     genre_similarity = spatial.distance.cosine(anime_1[1], anime_2[1])
     # gets how close animes are
     popularity_distance = abs(anime_1[2]-anime_2[2])
-    return genre_similarity*2 + popularity_distance
+    return genre_similarity*2 + popularity_distance + anime_2[4]
 
 # creates recommendation on similar genres
 def get_nearest_neighbors(anime_, K: int):
@@ -57,6 +57,15 @@ def get_nearest_neighbors(anime_, K: int):
     filtered = set(filtered)
 
     filtered_dictionary = [i for i in anime_dictionary.values() if not i[0] in filtered]
+
+    # to weigh anime member higher
+    members_max = 0
+    for anime in filtered_dictionary:
+        if anime[4] > members_max:
+            members_max = anime[4]
+
+    for anime in filtered_dictionary:
+        anime[4] = 1-(anime[4]/members_max)
 
     test = anime_
     if anime_[0] != 0:
